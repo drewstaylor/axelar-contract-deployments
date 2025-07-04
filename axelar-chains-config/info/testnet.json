@@ -2613,6 +2613,17 @@
           "structs": {
             "Q": "0x38a195a6c44053b22109b448e511dc0147b8fb64e1bfd0f3b3bfc449d8a30c8c::q::Q"
           }
+        },
+        "TEST": {
+          "address": "0x377a7414731cbcddfc0d44d2111ecadc486a2f5b75e4c6c08a84325041105886",
+          "typeArgument": "0x377a7414731cbcddfc0d44d2111ecadc486a2f5b75e4c6c08a84325041105886::test::TEST",
+          "decimals": "10",
+          "objects": {
+            "TreasuryCap": "0x3b5c7c66e733fc429985436028a6f78c093753fa55d313e517ab4866b3aaf8df",
+            "Metadata": "0x046e5c02e370b2999358185219b4c4827bd259c804a5df49dc9abbdc5ce6dd6f",
+            "TokenId": "0x17db0558d07e59e3a8212d778b29875547aed4876b49b106c4eb4bd3022692bd",
+            "origin": true
+          }
         }
       }
     },

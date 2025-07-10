@@ -2643,6 +2643,16 @@
             "TreasuryCap": "0x1d811a454cc30044b1c9732563e2f63712ad79c817415c8feff111a69a1ade4c",
             "Metadata": "0xa06132db5ffb4d31a7dd867ff90ef3b5c7c442c0d328874857ff984c00334848"
           }
+        },
+        "TMETA": {
+          "address": "0x813fdf6c826f760ba7c1ab34dbc35ee3bb4f8ba732fad65b71775af1ba4d2126",
+          "typeArgument": "0x813fdf6c826f760ba7c1ab34dbc35ee3bb4f8ba732fad65b71775af1ba4d2126::tmeta::TMETA",
+          "decimals": "6",
+          "objects": {
+            "TokenId": "0xb66e7498d01f1fb62a19d71c6f829384eee2bbcbab9aeba512f6530cfd4a3f5e",
+            "TreasuryCap": "0x5c3558fb9a835e3cf71466a62dffe45d8c8de879fde8accbbb135059a9667486",
+            "Metadata": "0x6d77f2a3eb9013e47132b8f5d353f0906040ba8fc61570b0d8c03a19231063ab"
+          }
         }
       }
     },

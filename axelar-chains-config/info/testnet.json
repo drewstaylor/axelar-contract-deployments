@@ -2633,6 +2633,16 @@
             "TokenId": "0xb047658ff595aaffc5e3b2e8949dd3dbb23d353ceb239da7bff1dd43232b2c7e",
             "origin": true
           }
+        },
+        "TINFO": {
+          "address": "0xb9baaef60e66223c7c0e19ee3f5675cb75c9f2b972dca2507ae607a5e7bef7b9",
+          "typeArgument": "0xb9baaef60e66223c7c0e19ee3f5675cb75c9f2b972dca2507ae607a5e7bef7b9::tinfo::TINFO",
+          "decimals": "8",
+          "objects": {
+            "TokenId": "0x33146924aa3d864c521ae570c4622a707c499d259f65c325b2794c28db677629",
+            "TreasuryCap": "0x1d811a454cc30044b1c9732563e2f63712ad79c817415c8feff111a69a1ade4c",
+            "Metadata": "0xa06132db5ffb4d31a7dd867ff90ef3b5c7c442c0d328874857ff984c00334848"
+          }
         }
       }
     },

@@ -221,21 +221,21 @@ async function registerCustomCoin(keypair, client, config, contracts, args, opti
     });
 
     // Channel
-    const channel = options.channel 
+    const channel = options.channel
         ? options.channel
         : await txBuilder.moveCall({
-            target: `${AxelarGateway.address}::channel::new`,
-        });
+              target: `${AxelarGateway.address}::channel::new`,
+          });
 
     // Register deployed token (from info)
     const [_tokenId, treasuryCapReclaimer] = await txBuilder.moveCall({
         target: `${itsConfig.address}::interchain_token_service::register_custom_coin`,
         arguments: [
             InterchainTokenService,
-            
+
             // XXX todo: this type should be correct (&Channel), determine why it's throwing `TypeMismatch`
             channel,
-            
+
             salt,
             metadata,
             coinManagement,
@@ -243,10 +243,8 @@ async function registerCustomCoin(keypair, client, config, contracts, args, opti
         typeArguments: [tokenType],
     });
 
-    if (options.channel)
-        txBuilder.tx.transferObjects([treasuryCapReclaimer], walletAddress);
-    else 
-        txBuilder.tx.transferObjects([treasuryCapReclaimer, channel], walletAddress);
+    if (options.channel) txBuilder.tx.transferObjects([treasuryCapReclaimer], walletAddress);
+    else txBuilder.tx.transferObjects([treasuryCapReclaimer, channel], walletAddress);
 
     const result = await broadcastFromTxBuilder(txBuilder, keypair, `Register custom coin (${symbol}) in InterchainTokenService`, options, {
         showEvents: true,
@@ -257,13 +255,6 @@ async function registerCustomCoin(keypair, client, config, contracts, args, opti
     // Save the deployed token
     saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
 }
-
-// link_coin
-// register_coin_metadata
-// receive_link_coin
-// give_unlinked_coin
-// remove_treasury_cap
-// restore_treasury_cap
 
 // migrate_coin_metadata
 async function migrateCoinMetadata(keypair, client, config, contracts, args, options) {
@@ -335,11 +326,7 @@ if (require.main === module) {
             mainProcessor(setFlowLimits, options, [tokenIds, flowLimits], processCommand);
         });
 
-    program.addCommand(setFlowLimitsProgram);
-    program.addCommand(addTrustedChainsProgram);
-    program.addCommand(removeTrustedChainsProgram);
-
-    // v1 its release
+    // v1 release
     const registerCoinFromInfoProgram = new Command()
         .name('register-coin-from-info')
         .command('register-coin-from-info <symbol> <name> <decimals>')
@@ -355,7 +342,7 @@ if (require.main === module) {
         .action((symbol, name, decimals, options) => {
             mainProcessor(registerCoinFromMetadata, options, [symbol, name, decimals], processCommand);
         });
-
+    
     const registerCustomCoinProgram = new Command()
         .name('register-custom-coin')
         .command('register-custom-coin <symbol> <name> <decimals>')
@@ -363,23 +350,6 @@ if (require.main === module) {
         .action((symbol, name, decimals, options) => {
             mainProcessor(registerCustomCoin, options, [symbol, name, decimals], processCommand);
         });
-
-    // TODO: <token-type> (and maybe <link-params>?) would be better as options
-    // const linkCoinProgram = new Command()
-    //     .name('link-coin')
-    //     .command('link-coin <destination-chain> <destination-address> <token-type> <link-params>')
-    //     .description(`TODO: describe link-coin and params`)
-    //     .action((destinationChain, destinationTokenAddress, tokenManagerType, linkParams, options) => {
-    //         mainProcessor(linkCoin, options, [destinationChain, destinationTokenAddress, tokenManagerType, linkParams], processCommand);
-    //     });
-
-    // const registerCoinMetadataProgram = new Command()
-    //     .name('register-coin-metadata')
-    //     .command('register-coin-metadata <symbol>')
-    //     .description(`TODO: descript register-coin-metadata`)
-    //     .action((tokenSymbol, options) => {
-    //         mainProcessor(registerCoinMetadata, options, tokenSymbol, processCommand);
-    //     });
 
     const migrateCoinMetadataProgram = new Command()
         .name('migrate-coin-metadata')
@@ -389,11 +359,15 @@ if (require.main === module) {
             mainProcessor(migrateCoinMetadata, options, symbol, processCommand);
         });
 
+    // v0
+    program.addCommand(setFlowLimitsProgram);
+    program.addCommand(addTrustedChainsProgram);
+    program.addCommand(removeTrustedChainsProgram);
+
+    // v1
     program.addCommand(registerCoinFromInfoProgram);
     program.addCommand(registerCoinFromMetadataProgram);
     program.addCommand(registerCustomCoinProgram);
-    // program.addCommand(linkCoinProgram);
-    // program.addCommand(registerCoinMetadataProgram);
     program.addCommand(migrateCoinMetadataProgram);
 
     // finalize program

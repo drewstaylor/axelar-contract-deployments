@@ -7,6 +7,7 @@ const {
     broadcastFromTxBuilder,
     deployTokenFromInfo,
     getWallet,
+    newChannel,
     newCoinManagementLocked,
     printWalletInfo,
     saveGeneratedTx,
@@ -146,7 +147,7 @@ async function registerCoinFromInfo(keypair, client, config, contracts, args, op
         typeArguments: [tokenType],
     });
 
-    const tokenId = await broadcastFromTxBuilder(
+    const result = await broadcastFromTxBuilder(
         txBuilder,
         keypair,
         `Register coin (${symbol}) from info in InterchainTokenService`,
@@ -156,8 +157,10 @@ async function registerCoinFromInfo(keypair, client, config, contracts, args, op
         },
     );
 
+    const tokenId = result.events[0].parsedJson.token_id.id;
+
     // Save the deployed token info in the contracts object
-    saveTokenDeployment(packageId, contracts, symbol, tokenId, treasuryCap, metadata);
+    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
 }
 
 // register_coin_from_metadata
@@ -182,7 +185,7 @@ async function registerCoinFromMetadata(keypair, client, config, contracts, args
         typeArguments: [tokenType],
     });
 
-    const tokenId = await broadcastFromTxBuilder(
+    const result = await broadcastFromTxBuilder(
         txBuilder,
         keypair,
         `Register coin (${symbol}) from Coin Metadata in InterchainTokenService`,
@@ -191,57 +194,72 @@ async function registerCoinFromMetadata(keypair, client, config, contracts, args
             showEvents: true,
         },
     );
+    const tokenId = result.events[0].parsedJson.token_id.id;
 
     // Save the deployed token info in the contracts object
-    saveTokenDeployment(packageId, contracts, symbol, tokenId, treasuryCap, metadata);
+    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
 }
 
 // register_custom_coin
-// TODO: Fix / use a valid ChannelId 
-// Failing with Error: 
-// The following input objects are invalid: {
-//  "code":"notExists",
-//  "object_id":"0xba1958cefa5dc9d71809edcea6ee07c54ff3195803999fb2864162bc394814d6"
-// }
 async function registerCustomCoin(keypair, client, config, contracts, args, options) {
     const { InterchainTokenService: itsConfig, AxelarGateway } = contracts;
-    const { ChannelId, InterchainTokenService } = itsConfig.objects;
+    const { InterchainTokenService } = itsConfig.objects;
     const [symbol, name, decimals] = args;
 
     const walletAddress = keypair.toSuiAddress();
+    const deployConfig = { client, keypair, options, walletAddress };
+
+    // Channel
+    const deployerChannel = options.channel 
+        ? options.channel
+        : await newChannel(deployConfig, AxelarGateway.address);
 
     // Deploy token on Sui
-    const deployConfig = { client, keypair, options, walletAddress };
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
 
     // New CoinManagement<T>
     const [txBuilder, coinManagement] = await newCoinManagementLocked(deployConfig, itsConfig, tokenType);
 
-    // Create salt
+    // Salt
     const salt = await txBuilder.moveCall({
         target: `${AxelarGateway.address}::bytes32::new`,
         arguments: [walletAddress],
     });
 
+    console.log({
+        args: {
+            InterchainTokenService,
+            deployerChannel,
+            salt,
+            metadata,
+            coinManagement,
+        },
+        typedArgs: { tokenType },
+    });
+
     // Register deployed token (from info)
-    await txBuilder.moveCall({
+    const [_tokenId, treasuryCapReclaimer] = await txBuilder.moveCall({
         target: `${itsConfig.address}::interchain_token_service::register_custom_coin`,
-        arguments: [InterchainTokenService, ChannelId, salt, metadata, coinManagement],
+        arguments: [
+            InterchainTokenService,
+            deployerChannel, // XXX todo: this type should be correct (&Channel), determine why it's throwing `TypeMismatch`
+            salt,
+            metadata,
+            coinManagement,
+        ],
         typeArguments: [tokenType],
     });
 
-    const tokenId = await broadcastFromTxBuilder(
-        txBuilder,
-        keypair,
-        `Register custom coin (${symbol}) in InterchainTokenService`,
-        options,
-        {
-            showEvents: true,
-        },
-    );
+    txBuilder.tx.transferObjects([treasuryCapReclaimer], walletAddress);
+
+    const result = await broadcastFromTxBuilder(txBuilder, keypair, `Register custom coin (${symbol}) in InterchainTokenService`, options, {
+        showEvents: true,
+    });
+
+    const tokenId = result.events[0].parsedJson.token_id.id;
 
     // Save the deployed token info in the contracts object
-    saveTokenDeployment(packageId, contracts, symbol, tokenId, treasuryCap, metadata);
+    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
 }
 
 // link_coin
@@ -307,9 +325,10 @@ async function migrateCoinMetadata(keypair, client, config, contracts, args, opt
     const { OperatorCap, InterchainTokenService } = itsConfig.objects;
     const txBuilder = new TxBuilder(client);
 
-    const [tokenId, symbol] = args;
-    if (!tokenId || !symbol) throw new Error('token id and token symbol are required');
+    const symbol = args;
+    if (!symbol) throw new Error('token symbol is required');
 
+    const tokenId = contracts[symbol.toUpperCase()].objects.TokenId;
     const tokenType = contracts[symbol.toUpperCase()].typeArgument;
 
     await txBuilder.moveCall({
@@ -418,10 +437,10 @@ if (require.main === module) {
 
     const migrateCoinMetadataProgram = new Command()
         .name('migrate-coin-metadata')
-        .command('migrate-coin-metadata <token-id> <symbol>')
+        .command('migrate-coin-metadata <symbol>')
         .description(`Release metadata for a given token id, can migrate tokens with metadata saved in ITS to v1`)
-        .action((tokenId, tokenSymbol, options) => {
-            mainProcessor(migrateCoinMetadata, options, [tokenId, tokenSymbol], processCommand);
+        .action((symbol, options) => {
+            mainProcessor(migrateCoinMetadata, options, symbol, processCommand);
         });
 
     program.addCommand(registerCoinFromInfoProgram);

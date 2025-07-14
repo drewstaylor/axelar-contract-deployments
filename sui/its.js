@@ -285,8 +285,8 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
     const { Gateway } = AxelarGateway.objects;
     const [symbol, name, decimals, destinationChain, destinationAddress] = args;
 
-    const deployConfig = { client, keypair, options, walletAddress };
     const walletAddress = keypair.toSuiAddress();
+    const deployConfig = { client, keypair, options, walletAddress };
 
     // Deploy source token on Sui (Token A)
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
@@ -473,8 +473,6 @@ if (require.main === module) {
         .action((symbol, name, decimals, destinationChain, destinationAddress, options) => {
             mainProcessor(linkCoin, options, [symbol, name, decimals, destinationChain, destinationAddress], processCommand);
         });
-
-    //[symbol, name, decimals, destinationChain, destinationAddress]
 
     // v0
     program.addCommand(setFlowLimitsProgram);

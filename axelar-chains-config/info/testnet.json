@@ -2383,39 +2383,39 @@
       },
       "contracts": {
         "AxelarGateway": {
-          "address": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812",
+          "address": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4",
           "versions": {
-            "0": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812"
+            "0": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4"
           },
           "structs": {
-            "WeightedSigner": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::weighted_signer::WeightedSigner",
-            "Bytes32": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::bytes32::Bytes32",
-            "WeightedSigners": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::weighted_signers::WeightedSigners",
-            "Signature": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::proof::Signature",
-            "Proof": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::proof::Proof",
-            "Message": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::message::Message",
-            "SignersRotated": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::events::SignersRotated",
-            "ChannelCreated": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::events::ChannelCreated",
-            "ChannelDestroyed": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::events::ChannelDestroyed",
-            "ContractCall": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::events::ContractCall",
-            "MessageApproved": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::events::MessageApproved",
-            "MessageExecuted": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::events::MessageExecuted",
-            "AxelarSigners": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::auth::AxelarSigners",
-            "MessageToSign": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::auth::MessageToSign",
-            "Channel": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::channel::Channel",
-            "ApprovedMessage": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::channel::ApprovedMessage",
-            "OwnerCap": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::owner_cap::OwnerCap",
-            "MessageTicket": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::message_ticket::MessageTicket",
-            "MessageStatus": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::message_status::MessageStatus",
-            "Gateway_v0": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::gateway_v0::Gateway_v0",
-            "CommandType": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::gateway_v0::CommandType",
-            "Gateway": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812::gateway::Gateway"
+            "WeightedSigner": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::weighted_signer::WeightedSigner",
+            "Bytes32": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::bytes32::Bytes32",
+            "WeightedSigners": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::weighted_signers::WeightedSigners",
+            "Signature": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::proof::Signature",
+            "Proof": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::proof::Proof",
+            "Message": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::message::Message",
+            "SignersRotated": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::events::SignersRotated",
+            "ChannelCreated": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::events::ChannelCreated",
+            "ChannelDestroyed": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::events::ChannelDestroyed",
+            "ContractCall": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::events::ContractCall",
+            "MessageApproved": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::events::MessageApproved",
+            "MessageExecuted": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::events::MessageExecuted",
+            "AxelarSigners": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::auth::AxelarSigners",
+            "MessageToSign": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::auth::MessageToSign",
+            "Channel": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::channel::Channel",
+            "ApprovedMessage": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::channel::ApprovedMessage",
+            "OwnerCap": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::owner_cap::OwnerCap",
+            "MessageTicket": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::message_ticket::MessageTicket",
+            "MessageStatus": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::message_status::MessageStatus",
+            "Gateway_v0": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::gateway_v0::Gateway_v0",
+            "CommandType": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::gateway_v0::CommandType",
+            "Gateway": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::gateway::Gateway"
           },
           "objects": {
-            "Gateway": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812",
+            "Gateway": "0x6fc18d39a9d7bf46c438bdb66ac9e90e902abffca15b846b32570538982fb3db",
             "UpgradeCap": "0xb550df1b7319a04d4833571c7082b20262c77a6cd2be78b66aa1a668b4ebb6a3",
             "Gatewayv0": "0x1bf6a576436c14ea4dd90b35856ab276296a1c774a584aa7678e8905ebf9a6b5",
-            "OwnerCap": "0xa477980c47b6611ef9e6de87ec3f78338068f62ea2cd28820fe9ff62513f32bf"
+            "OwnerCap": "0x8d417b896f1f05c74f8f52446fb1a61b603d43a93c69cfae052f9501ba0340a0"
           },
           "domainSeparator": "0xf221c54a1a478f48c840a24cf2b96f77c9bc369a40570744b8fedd91df001624",
           "operator": "0xadc53ffb50d2fc245ddb88223619b837f743fbd420745d97a3c3e14e0beb7940",
@@ -3420,7 +3420,7 @@
         "sui": {
           "governanceAddress": "axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj",
           "serviceName": "amplifier",
-          "sourceGatewayAddress": "0xa0e8f2406d298957876cbb1e69554665bf6e422955fcb689d0b6a9b5a4b22812",
+          "sourceGatewayAddress": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4",
           "votingThreshold": [
             "51",
             "100"

@@ -2371,7 +2371,7 @@
       "name": "Sui",
       "axelarId": "sui",
       "networkType": "testnet",
-      "rpc": "https://sui-testnet-rpc.publicnode.com",
+      "rpc": "https://sui-testnet.public.blastapi.io",
       "tokenSymbol": "SUI",
       "decimals": 9,
       "chainType": "sui",
@@ -2619,6 +2619,16 @@
           "deployer": "0x4cdab023fcddcf492891b9d72ce7b523c5b465883d02fedd1bbe81f4598cf40b",
           "structs": {
             "Q": "0xc582555b7aea42008654cf033b8f75dcba1b8bb9aa28921b59ea875c35f6aa46::q::Q"
+          }
+        },
+        "TCUST": {
+          "address": "0x7ed99fa0a4b53e22b841ca58ccfdda9e1220bbdbc4bb793325a9d757945d9f77",
+          "typeArgument": "0x7ed99fa0a4b53e22b841ca58ccfdda9e1220bbdbc4bb793325a9d757945d9f77::tcust::TCUST",
+          "decimals": "9",
+          "objects": {
+            "TokenId": "0xd4404ae30efc8017b2bfb58505947e5f7db34406d8af22cf276471a0b381d93e",
+            "TreasuryCap": "0x2a23a1a4865830ef675a716a5405895143c020823ef1df7f0a3f6e4dcdd452d1",
+            "Metadata": "0xd30d8acada9e9c57812c195b5e9b82c3b8174610930c95a4febd9c3a6f87510a"
           }
         }
       }

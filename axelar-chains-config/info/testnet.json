@@ -2530,9 +2530,10 @@
           }
         },
         "InterchainTokenService": {
-          "address": "0x0dfad65500aa46f35ab886eeb3cf188cfb7d41949918e5f83d44510bf7d306e2",
+          "address": "0x2a0e0783814057ba887f8c6934ee3eab4db2cc40c67394fe69dd9630f624aed2",
           "versions": {
-            "0": "0x0dfad65500aa46f35ab886eeb3cf188cfb7d41949918e5f83d44510bf7d306e2"
+            "0": "0x0dfad65500aa46f35ab886eeb3cf188cfb7d41949918e5f83d44510bf7d306e2",
+            "1": "0x2a0e0783814057ba887f8c6934ee3eab4db2cc40c67394fe69dd9630f624aed2"
           },
           "deployer": "0x4cdab023fcddcf492891b9d72ce7b523c5b465883d02fedd1bbe81f4598cf40b",
           "structs": {

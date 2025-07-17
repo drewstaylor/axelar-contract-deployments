@@ -2630,6 +2630,22 @@
             "TreasuryCap": "0x2a23a1a4865830ef675a716a5405895143c020823ef1df7f0a3f6e4dcdd452d1",
             "Metadata": "0xd30d8acada9e9c57812c195b5e9b82c3b8174610930c95a4febd9c3a6f87510a"
           }
+        },
+        "LINK": {
+          "address": "0x0f8e792997d5834f489ae41d1957908651e0a24f41c6828be6b483af5e360cdf",
+          "typeArgument": "0x0f8e792997d5834f489ae41d1957908651e0a24f41c6828be6b483af5e360cdf::link::LINK",
+          "decimals": "10",
+          "objects": {
+            "TokenId": "0x82eff1d364f56fe66dbc9abc3a123351e01afae9434f3951afb5c90d8e667c2d",
+            "TreasuryCap": "0xbc56a9a7d59ced3f8e06fec386268d809268541799ecac653ac7b61094d1d2b1",
+            "Metadata": "0x83215455a99d9420d57bccca22af93f462db0b182ee1440e42212ab409c6047d"
+          },
+          "linkedTokens": [
+            {
+              "destinationChain": "ethereum-sepolia",
+              "destinationAddress": "0x3fC29836E84E471a053D2D9E80494A867D670E"
+            }
+          ]
         }
       }
     },

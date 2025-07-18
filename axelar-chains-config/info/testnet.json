@@ -2646,6 +2646,16 @@
               "destinationAddress": "0x3fC29836E84E471a053D2D9E80494A867D670E"
             }
           ]
+        },
+        "CUST2": {
+          "address": "0x708dc0fdccdd2d9814e00cecf52de78946f69aabb5b232f7ed17b5a28d7c1688",
+          "typeArgument": "0x708dc0fdccdd2d9814e00cecf52de78946f69aabb5b232f7ed17b5a28d7c1688::cust2::CUST2",
+          "decimals": "8",
+          "objects": {
+            "TokenId": {},
+            "TreasuryCap": "0xb3df5e1105a76573628fa9c1b30562059fab1841ccf4bcbec8115aa2ae5144ac",
+            "Metadata": "0x8ec2be0b79c8805249d74eea20662389b65a33d17cffe44b5aed5149bb3066e5"
+          }
         }
       }
     },

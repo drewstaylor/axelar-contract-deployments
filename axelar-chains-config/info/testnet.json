@@ -2656,6 +2656,22 @@
             "TreasuryCap": "0xb3df5e1105a76573628fa9c1b30562059fab1841ccf4bcbec8115aa2ae5144ac",
             "Metadata": "0x8ec2be0b79c8805249d74eea20662389b65a33d17cffe44b5aed5149bb3066e5"
           }
+        },
+        "LINK2": {
+          "address": "0xe42a4ecf6bd4a726b6f3e6fe155888ecb691de88d930e7a0b480810971b9bba5",
+          "typeArgument": "0xe42a4ecf6bd4a726b6f3e6fe155888ecb691de88d930e7a0b480810971b9bba5::link2::LINK2",
+          "decimals": "10",
+          "objects": {
+            "TokenId": "0xf132f4d1918b86f92441231840201a1e9b65e5999814fa24ba19b69b8bf76060",
+            "TreasuryCap": "0x734b4e38b3461ccaff9ba34218175fcb96f86d05f584439477b4c1f44c70cfd7",
+            "Metadata": "0xe1aa0dafb54fb88d36b0b876963cb2a9cba82e55bb50df7014f337fe82572226"
+          },
+          "linkedTokens": [
+            {
+              "destinationChain": "ethereum-sepolia",
+              "destinationAddress": "0x3fC29836E84E471a053D2D9E80494A867D670E"
+            }
+          ]
         }
       }
     },

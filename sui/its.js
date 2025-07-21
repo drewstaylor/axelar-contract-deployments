@@ -1,14 +1,16 @@
-const { Command } = require('commander');
+const { Option, Command } = require('commander');
 const { STD_PACKAGE_ID, TxBuilder } = require('@axelar-network/axelar-cgp-sui');
 const { loadConfig, saveConfig, getChainConfig, parseTrustedChains } = require('../common/utils');
 const {
     addBaseOptions,
     addOptionsToCommands,
     broadcastFromTxBuilder,
+    createSaltAddress,
     deployTokenFromInfo,
     getWallet,
     newCoinManagementLocked,
     printWalletInfo,
+    registerCustomCoinUtil,
     saveGeneratedTx,
     saveTokenDeployment,
 } = require('./utils');
@@ -202,52 +204,16 @@ async function registerCoinFromMetadata(keypair, client, config, contracts, args
 // register_custom_coin
 async function registerCustomCoin(keypair, client, config, contracts, args, options) {
     const { InterchainTokenService: itsConfig, AxelarGateway } = contracts;
-    const { InterchainTokenService } = itsConfig.objects;
-    const [symbol, name, decimals] = args;
-
     const walletAddress = keypair.toSuiAddress();
     const deployConfig = { client, keypair, options, walletAddress };
+    const [symbol, name, decimals] = args;
 
     // Deploy token on Sui
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
 
-    // New CoinManagement<T>
-    const [txBuilder, coinManagement] = await newCoinManagementLocked(deployConfig, itsConfig, tokenType);
-
-    // Channel
-    const channel = options.channel
-        ? options.channel
-        : await txBuilder.moveCall({
-              target: `${AxelarGateway.address}::channel::new`,
-          });
-
-    // Salt
-    const salt = await txBuilder.moveCall({
-        target: `${AxelarGateway.address}::bytes32::new`,
-        arguments: [walletAddress],
-    });
-
-    // Register deployed token (from info)
-    const [_tokenId, treasuryCapReclaimer] = await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::register_custom_coin`,
-        arguments: [InterchainTokenService, channel, salt, metadata, coinManagement],
-        typeArguments: [tokenType],
-    });
-
-    await txBuilder.moveCall({
-        target: `${STD_PACKAGE_ID}::option::destroy_none`,
-        arguments: [treasuryCapReclaimer],
-        typeArguments: [[itsConfig.structs.TreasuryCapReclaimer, '<', tokenType, '>'].join('')],
-    });
-
-    if (!options.channel) txBuilder.tx.transferObjects([channel], walletAddress);
-
-    const result = await broadcastFromTxBuilder(txBuilder, keypair, `Register Custom Coin (${symbol}) in InterchainTokenService`, options, {
-        showEvents: true,
-    });
-    const tokenId = result.events.filter((evt) => {
-        return evt.parsedJson.token_id ? true : false;
-    })[0].parsedJson.token_id.id;
+    // Register deployed token (custom)
+    const [tokenId, _channelId] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
+    if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
 
     // Save the deployed token
     saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
@@ -290,8 +256,7 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
 
     // User calls registerTokenMetadata on ITS Chain A to submit a RegisterTokenMetadata msg type to
     // ITS Hub to register token data in ITS hub.
-    let txBuilder = new TxBuilder(client),
-        coinManagement;
+    let txBuilder = new TxBuilder(client);
 
     let messageTicket = await txBuilder.moveCall({
         target: `${itsConfig.address}::interchain_token_service::register_coin_metadata`,
@@ -308,56 +273,12 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
 
     // User calls registerCustomToken on ITS Chain A to register the token on the source chain.
     // A token manager is deployed on the source chain corresponding to the tokenId.
+    const [tokenId, channelId] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
 
-    // New CoinManagement<T>
-    [txBuilder, coinManagement] = await newCoinManagementLocked(deployConfig, itsConfig, tokenType);
+    if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
+    if (!options.channel && !channelId) throw new Error(`error resolving channel id from registration tx, got ${channelId}`);
 
-    // Channel
-    let channel = options.channel
-        ? options.channel
-        : await txBuilder.moveCall({
-              target: `${AxelarGateway.address}::channel::new`,
-          });
-
-    // Salt
-    let salt = await txBuilder.moveCall({
-        target: `${AxelarGateway.address}::bytes32::new`,
-        arguments: [walletAddress],
-    });
-
-    // Register deployed token (from info)
-    const [_tokenId, treasuryCapReclaimer] = await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::register_custom_coin`,
-        arguments: [InterchainTokenService, channel, salt, metadata, coinManagement],
-        typeArguments: [tokenType],
-    });
-
-    await txBuilder.moveCall({
-        target: `${STD_PACKAGE_ID}::option::destroy_none`,
-        arguments: [treasuryCapReclaimer],
-        typeArguments: [[itsConfig.structs.TreasuryCapReclaimer, '<', tokenType, '>'].join('')],
-    });
-
-    if (!options.channel) txBuilder.tx.transferObjects([channel], walletAddress);
-
-    const registerResult = await broadcastFromTxBuilder(
-        txBuilder,
-        keypair,
-        `Register Custom Coin (${symbol}) in InterchainTokenService`,
-        options,
-        {
-            showEvents: true,
-        },
-    );
-    const tokenId = registerResult.events.filter((evt) => {
-        return evt.parsedJson.token_id ? true : false;
-    })[0].parsedJson.token_id.id;
-
-    // If the channel object went out of bounds resolve its object id
-    if (!options.channel)
-        channel = registerResult.events.filter((evt) => {
-            return evt.transactionModule == 'channel' ? true : false;
-        })[0].parsedJson.id;
+    const channel = options.channel ? options.channel : channelId;
 
     // User then calls linkToken on ITS Chain A with the destination token address for Chain B.
     // This submits a LinkToken msg type to ITS Hub.
@@ -367,10 +288,10 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
         target: `${itsConfig.address}::token_manager_type::lock_unlock`,
     });
 
-    // Refresh salt to bring it in bounds
-    salt = await txBuilder.moveCall({
+    // Salt
+    const salt = await txBuilder.moveCall({
         target: `${AxelarGateway.address}::bytes32::new`,
-        arguments: [walletAddress],
+        arguments: [createSaltAddress()],
     });
 
     messageTicket = await txBuilder.moveCall({
@@ -481,6 +402,7 @@ if (require.main === module) {
         .name('register-custom-coin')
         .command('register-custom-coin <symbol> <name> <decimals>')
         .description(`Register a custom coin in ITS using token name, symbol and decimals. Salt is automatically created.`)
+        .addOption(new Option('--channel <channel>', 'Existing channel ID to initiate a cross-chain message over'))
         .action((symbol, name, decimals, options) => {
             mainProcessor(registerCustomCoin, options, [symbol, name, decimals], processCommand);
         });
@@ -499,6 +421,7 @@ if (require.main === module) {
         .description(
             `Deploy a source coin on SUI and register it in ITS using custom registration, then link it with the destination using the destination chain name and address.`,
         )
+        .addOption(new Option('--channel <channel>', 'Existing channel ID to initiate a cross-chain message over'))
         .action((symbol, name, decimals, destinationChain, destinationAddress, options) => {
             mainProcessor(linkCoin, options, [symbol, name, decimals, destinationChain, destinationAddress], processCommand);
         });

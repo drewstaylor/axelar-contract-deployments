@@ -212,7 +212,7 @@ async function registerCustomCoin(keypair, client, config, contracts, args, opti
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
 
     // Register deployed token (custom)
-    const [tokenId, _channelId] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
+    const [tokenId, _channelId, _salt] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
     if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
 
     // Save the deployed token
@@ -239,6 +239,49 @@ async function migrateCoinMetadata(keypair, client, config, contracts, args, opt
     });
 
     await broadcastFromTxBuilder(txBuilder, keypair, 'Migrate Coin Metadata', options);
+}
+
+// give_unlinked_coin
+async function giveUnlinkedCoin(keypair, client, config, contracts, args, options) {
+    const { InterchainTokenService: itsConfig, AxelarGateway } = contracts;
+    const { InterchainTokenService } = itsConfig.objects;
+    const walletAddress = keypair.toSuiAddress();
+    const deployConfig = { client, keypair, options, walletAddress };
+    const [symbol, name, decimals] = args;
+
+    let txBuilder = new TxBuilder(client);
+
+    // Deploy token on Sui
+    const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
+
+    // Register deployed token (custom)
+    const [tokenId, _channelId, _salt] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
+    if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
+
+    // Option<TreasuryCap<T>> 
+    const target = options.treasuryCap 
+        ? `${STD_PACKAGE_ID}::option::some` 
+        : `${STD_PACKAGE_ID}::option::none`;
+    const arguments = options.treasuryCap ? [] : [treasuryCap];
+    const typeArguments = [[itsConfig.structs.TreasuryCapReclaimer, '<', tokenType, '>'].join('')];
+    const treasuryCapOption = await txBuilder.moveCall({ target, arguments, typeArguments });
+
+    // give_unlinked_coin<T>
+    const treasuryCapReclaimer = await txBuilder.moveCall({
+        target: `${itsConfig.address}::interchain_token_service::give_unlinked_coin`,
+        arguments: [
+            InterchainTokenService,
+            tokenId,
+            metadata,
+            treasuryCapOption,
+        ],
+        typeArguments: [tokenType],
+    });
+
+    if (options.treasuryCap) txBuilder.tx.transferObjects([treasuryCapReclaimer], walletAddress);
+
+    // Save the deployed token
+    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);    
 }
 
 // link_coin
@@ -273,7 +316,14 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
 
     // User calls registerCustomToken on ITS Chain A to register the token on the source chain.
     // A token manager is deployed on the source chain corresponding to the tokenId.
-    const [tokenId, channelId] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
+    const [tokenId, channelId, saltAddress] = await registerCustomCoinUtil(
+        deployConfig,
+        itsConfig,
+        AxelarGateway,
+        symbol,
+        metadata,
+        tokenType,
+    );
 
     if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
     if (!options.channel && !channelId) throw new Error(`error resolving channel id from registration tx, got ${channelId}`);
@@ -291,7 +341,7 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
     // Salt
     const salt = await txBuilder.moveCall({
         target: `${AxelarGateway.address}::bytes32::new`,
-        arguments: [createSaltAddress()],
+        arguments: [saltAddress],
     });
 
     messageTicket = await txBuilder.moveCall({
@@ -415,6 +465,17 @@ if (require.main === module) {
             mainProcessor(migrateCoinMetadata, options, symbol, processCommand);
         });
 
+    const giveUnlinkedCoinProgram = new Command()
+        .name('give-unlinked-coin')
+        .command('give-unlinked-coin <symbol> <name> <decimals>')
+        .description(
+            `Deploy a coin on Sui, register it as custom coin and give its treasury capability to ITS.`,
+        )
+        .addOption(new Option('--treasuryCapReclaimer', 'Pass this flag to retain the ability to reclaim the treasury capability'))
+        .action((symbol, name, decimals, options) => {
+            mainProcessor(giveUnlinkedCoin, options, [symbol, name, decimals], processCommand);
+        });
+
     const linkCoinProgram = new Command()
         .name('link-coin')
         .command('link-coin <symbol> <name> <decimals> <destinationChain> <destinationAddress>')
@@ -436,6 +497,7 @@ if (require.main === module) {
     program.addCommand(registerCoinFromMetadataProgram);
     program.addCommand(registerCustomCoinProgram);
     program.addCommand(migrateCoinMetadataProgram);
+    program.addCommand(giveUnlinkedCoinProgram);
     program.addCommand(linkCoinProgram);
 
     // finalize program

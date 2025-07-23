@@ -2699,6 +2699,17 @@
             "Metadata": "0xeae02f26489955ac5479a29752c7b369b7ee1399919a5a1c028a20f1429b7623"
           },
           "saltAddress": "0x2eb7fc2cb0d31e9791c5c51b77a3b694fa0394ad903e8e453017c8c1e7259bb9"
+        },
+        "CLAIM": {
+          "address": "0xe6d9e0cda34ec6a18394278a8f8169839a6cba9807f3b08f7837ddfda1d7bc4c",
+          "typeArgument": "0xe6d9e0cda34ec6a18394278a8f8169839a6cba9807f3b08f7837ddfda1d7bc4c::claim::CLAIM",
+          "decimals": "8",
+          "objects": {
+            "TokenId": "0x51d0d869130c22c4f9fe17029350520bb0b0017069711131661960608768539f",
+            "TreasuryCap": "0x9ec6d561a146f4ce39a27447aba12ed3480dca037730061ba52ed72a6cc310d9",
+            "Metadata": "0xda83b7e04d7f559eacf22dd7f9850cce05be08264847d57ac212451acd2023a6"
+          },
+          "saltAddress": "0x874b2fd7b3fc93e1c9c521af3afcf8ff8c8abfe72e4444800e8f626de298915b"
         }
       }
     },

@@ -2690,18 +2690,15 @@
           ]
         },
         "GIVE": {
-          "address": "0x1d44265d61207454cf4e1d4c5b5f026b5603eb2a92b8b293257dbf6c7ffb8e60",
-          "typeArgument": "0x1d44265d61207454cf4e1d4c5b5f026b5603eb2a92b8b293257dbf6c7ffb8e60::give::GIVE",
+          "address": "0x6b0e1adec0f7f9cda6141f1d85794af9a7b1b33a36c57e3677b495cd272a3fb7",
+          "typeArgument": "0x6b0e1adec0f7f9cda6141f1d85794af9a7b1b33a36c57e3677b495cd272a3fb7::give::GIVE",
           "decimals": "10",
           "objects": {
-            "TokenId": {
-              "$kind": "Result",
-              "Result": 0
-            },
-            "TreasuryCap": "0x607a9784baaafbfa159cfa51f022fb4c0e54a033138b289bd3d9a0aff6cfd596",
-            "Metadata": "0xfcf73eb83331d3936e3d1b8205f5a56a5c60ca890dc2ff3c2d34f7c9423986d5"
+            "TokenId": "0xfb0c8912ce96d49b39694a5d4c6303a70877be57108c8065a6501470593318e8",
+            "TreasuryCap": "0x80b03b0a12dd6f31c12b8bd7e2f45f8046742bd70fb915a9a09dbf165755a809",
+            "Metadata": "0xeae02f26489955ac5479a29752c7b369b7ee1399919a5a1c028a20f1429b7623"
           },
-          "saltAddress": "0x8697a504bc09e7bd5d2f7b8c32dda7b6e27ab87ecb83fca0b3f456762b97dc22"
+          "saltAddress": "0x2eb7fc2cb0d31e9791c5c51b77a3b694fa0394ad903e8e453017c8c1e7259bb9"
         }
       }
     },

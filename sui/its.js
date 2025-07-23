@@ -212,11 +212,22 @@ async function registerCustomCoin(keypair, client, config, contracts, args, opti
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
 
     // Register deployed token (custom)
-    const [tokenId, _channelId, _salt] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
+    const [tokenId, _channelId, saltAddress] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
     if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
 
     // Save the deployed token
-    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
+    saveTokenDeployment(
+        packageId,
+        tokenType,
+        contracts,
+        symbol,
+        decimals,
+        tokenId,
+        treasuryCap,
+        metadata,
+        [],
+        saltAddress
+    );
 }
 
 // migrate_coin_metadata
@@ -249,21 +260,29 @@ async function giveUnlinkedCoin(keypair, client, config, contracts, args, option
     const deployConfig = { client, keypair, options, walletAddress };
     const [symbol, name, decimals] = args;
 
-    let txBuilder = new TxBuilder(client);
-
     // Deploy token on Sui
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
 
     // Register deployed token (custom)
-    const [tokenId, _channelId, _salt] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
-    if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
+    const [tokenAddress, _channelId, saltAddress] = await registerCustomCoinUtil(deployConfig, itsConfig, AxelarGateway, symbol, metadata, tokenType);
+    if (!tokenAddress) throw new Error(`error resolving token id from registration tx, got ${tokenAddress}`);
+
+    const txBuilder = new TxBuilder(client);
+
+    // TokenId
+    const tokenId = await txBuilder.moveCall({
+        target: `${itsConfig.address}::token_id::from_address`,
+        arguments: [tokenAddress],
+    });
+    //0x2::dynamic_field::Field<0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9::token_id::TokenId, 0x1::type_name::TypeName>
 
     // Option<TreasuryCap<T>> 
+    const treasuryCapReclaimerType = [itsConfig.structs.TreasuryCapReclaimer, '<', tokenType, '>'].join('')
     const target = options.treasuryCap 
         ? `${STD_PACKAGE_ID}::option::some` 
         : `${STD_PACKAGE_ID}::option::none`;
-    const arguments = options.treasuryCap ? [] : [treasuryCap];
-    const typeArguments = [[itsConfig.structs.TreasuryCapReclaimer, '<', tokenType, '>'].join('')];
+    const arguments = options.treasuryCap ? [treasuryCap] : [];
+    const typeArguments = [treasuryCapReclaimerType];
     const treasuryCapOption = await txBuilder.moveCall({ target, arguments, typeArguments });
 
     // give_unlinked_coin<T>
@@ -271,17 +290,37 @@ async function giveUnlinkedCoin(keypair, client, config, contracts, args, option
         target: `${itsConfig.address}::interchain_token_service::give_unlinked_coin`,
         arguments: [
             InterchainTokenService,
-            tokenId,
+            tokenId, //XXX
             metadata,
             treasuryCapOption,
         ],
         typeArguments: [tokenType],
     });
 
-    if (options.treasuryCap) txBuilder.tx.transferObjects([treasuryCapReclaimer], walletAddress);
+    if (options.treasuryCap)
+        txBuilder.tx.transferObjects([treasuryCapReclaimer], walletAddress);
+    else
+        await txBuilder.moveCall({
+            target: `${STD_PACKAGE_ID}::option::destroy_none`,
+            arguments: [treasuryCapReclaimer],
+            typeArguments: [treasuryCapReclaimerType],
+        });
+    
+    await broadcastFromTxBuilder(txBuilder, keypair, `Give Unlinked Coin (${symbol})`, options);
 
     // Save the deployed token
-    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);    
+    saveTokenDeployment(
+        packageId,
+        tokenType,
+        contracts,
+        symbol,
+        decimals,
+        tokenId,
+        treasuryCap,
+        metadata,
+        [],
+        saltAddress,
+    );
 }
 
 // link_coin
@@ -379,6 +418,7 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
         sourceToken.treasuryCap,
         sourceToken.metadata,
         [linkedToken],
+        saltAddress,
     );
 }
 

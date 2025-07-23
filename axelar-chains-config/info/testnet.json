@@ -2688,6 +2688,20 @@
               "destinationAddress": "0x3fC29836E84E471a053D2D9E80494A867D670E"
             }
           ]
+        },
+        "GIVE": {
+          "address": "0x1d44265d61207454cf4e1d4c5b5f026b5603eb2a92b8b293257dbf6c7ffb8e60",
+          "typeArgument": "0x1d44265d61207454cf4e1d4c5b5f026b5603eb2a92b8b293257dbf6c7ffb8e60::give::GIVE",
+          "decimals": "10",
+          "objects": {
+            "TokenId": {
+              "$kind": "Result",
+              "Result": 0
+            },
+            "TreasuryCap": "0x607a9784baaafbfa159cfa51f022fb4c0e54a033138b289bd3d9a0aff6cfd596",
+            "Metadata": "0xfcf73eb83331d3936e3d1b8205f5a56a5c60ca890dc2ff3c2d34f7c9423986d5"
+          },
+          "saltAddress": "0x8697a504bc09e7bd5d2f7b8c32dda7b6e27ab87ecb83fca0b3f456762b97dc22"
         }
       }
     },

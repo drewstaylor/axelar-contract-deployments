@@ -2713,15 +2713,16 @@
           "saltAddress": "0xf690861b50b12729d3fe98db27a55d4dd5c021fb5a52fd7fd65dd7cc923bc440"
         },
         "GCUST": {
-          "address": "0x02caaaeab578924b385b757866ff0ebb9dd97fbdfc3be99097b8d1aa137d20d8",
-          "typeArgument": "0x02caaaeab578924b385b757866ff0ebb9dd97fbdfc3be99097b8d1aa137d20d8::gcust::GCUST",
+          "address": "0x30c63d024b79276bd986c1f5f04f8b66aa86994fb243cdf82bd3dd8b4ea17c99",
+          "typeArgument": "0x30c63d024b79276bd986c1f5f04f8b66aa86994fb243cdf82bd3dd8b4ea17c99::gcust::GCUST",
           "decimals": "9",
           "objects": {
-            "TokenId": "0xd41bd5e5cae17d9ce37e0279437e44aa00cc3499db3c17c808d9a577fbb7e161",
-            "TreasuryCap": "0xb10b0e099a28e56630a4025c0530ffbf75ce7dcd5e39f9a5be5f7443c66b26da",
-            "Metadata": "0xbc42ae5d58dff9d06270d19fa690ae20b3b77ac3881ae1c4396fdc9ffa8289e7"
+            "TokenId": "0xd8607dff75c419e8b025a5d633013b398bf9168fd0ca14caa3f48c2b26525b6b",
+            "TreasuryCap": "0x3f540e0bdd747df2261f729ff30f032e5c12938007c0feafa73e7fe4194aa5e2",
+            "Metadata": "0x5950e9210cefcc0b9e587bf848f7be71c30b60ee26dcc492a6286760b07b9234",
+            "TreasuryCapReclaimer": "0x665dd86834f79b6783374520411b311507516c4e25880ca1c168474a8a2a1245"
           },
-          "saltAddress": "0x23bd5a4edd12ac7123a51b0c79fb945fd041795be4f065684ea86e2888a0717d"
+          "saltAddress": "0x21745f709295f1bb248a82914bec3d70843de8ee795f3d9e2e5cb5bd46eb3506"
         }
       }
     },

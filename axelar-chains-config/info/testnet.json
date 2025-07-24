@@ -2711,6 +2711,17 @@
             "TreasuryCapReclaimer": "0xa148948d652afeedbc5a2cc0bc9c66a957d7310c2f395cf43dba4e91d5632f04"
           },
           "saltAddress": "0xf690861b50b12729d3fe98db27a55d4dd5c021fb5a52fd7fd65dd7cc923bc440"
+        },
+        "GCUST": {
+          "address": "0x02caaaeab578924b385b757866ff0ebb9dd97fbdfc3be99097b8d1aa137d20d8",
+          "typeArgument": "0x02caaaeab578924b385b757866ff0ebb9dd97fbdfc3be99097b8d1aa137d20d8::gcust::GCUST",
+          "decimals": "9",
+          "objects": {
+            "TokenId": "0xd41bd5e5cae17d9ce37e0279437e44aa00cc3499db3c17c808d9a577fbb7e161",
+            "TreasuryCap": "0xb10b0e099a28e56630a4025c0530ffbf75ce7dcd5e39f9a5be5f7443c66b26da",
+            "Metadata": "0xbc42ae5d58dff9d06270d19fa690ae20b3b77ac3881ae1c4396fdc9ffa8289e7"
+          },
+          "saltAddress": "0x23bd5a4edd12ac7123a51b0c79fb945fd041795be4f065684ea86e2888a0717d"
         }
       }
     },

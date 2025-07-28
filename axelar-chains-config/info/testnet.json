@@ -2530,9 +2530,10 @@
           }
         },
         "InterchainTokenService": {
-          "address": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9",
+          "address": "0xbf00ce53c22cf17a3f17b14aa1c10363dc71dd341cc7e22f7ff5701cde2ffc26",
           "versions": {
-            "0": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9"
+            "0": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9",
+            "1": "0xbf00ce53c22cf17a3f17b14aa1c10363dc71dd341cc7e22f7ff5701cde2ffc26"
           },
           "deployer": "0x4cdab023fcddcf492891b9d72ce7b523c5b465883d02fedd1bbe81f4598cf40b",
           "structs": {
@@ -2552,6 +2553,7 @@
             "InterchainTransferReceived": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9::events::InterchainTransferReceived",
             "UnregisteredCoinReceived": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9::events::UnregisteredCoinReceived",
             "UnlinkedCoinReceived": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9::events::UnlinkedCoinReceived",
+            "UnlinkedCoinRemoved": "0xbf00ce53c22cf17a3f17b14aa1c10363dc71dd341cc7e22f7ff5701cde2ffc26::events::UnlinkedCoinRemoved",
             "TrustedChainAdded": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9::events::TrustedChainAdded",
             "TrustedChainRemoved": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9::events::TrustedChainRemoved",
             "FlowLimitSet": "0x455f48b0c71b2a7e6c1f1c5507f70c4a719effc72fab931d7ab918d9b1efe9e9::events::FlowLimitSet",

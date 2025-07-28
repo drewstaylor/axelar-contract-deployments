@@ -2735,7 +2735,7 @@
             "TokenId": "0xf1b943867ec15e995bfe8ce296883e13e2076e2df98ee06551ba71e493f455e0",
             "TreasuryCap": "0xf39a3764e3b1132a89df8202d5de90461a72b712fd87cafa87c3f8d5cdadf3fd",
             "Metadata": "0x36c970f79319db78402c56afe68ea270ca640692ab22f2bf755b3ad45c8749cf",
-            "TreasuryCapReclaimer": "0xcc5d0b8056c88e46e7dc9d59ce4a8ae9e36a37296645f358fc6c589e1327c480"
+            "TreasuryCapReclaimer": null
           },
           "saltAddress": "0x6740152d9e836c66d1de6d6b9f6fab34e4a28dad97ad2f1f0505547ec56dc956"
         },

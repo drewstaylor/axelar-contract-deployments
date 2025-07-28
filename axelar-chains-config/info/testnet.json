@@ -2612,6 +2612,39 @@
           "structs": {
             "Q": "0xc7cd71cca28fa2c3a34f978606e35c5ae585d614e97bbdb3c5036de1269d5e81::q::Q"
           }
+        },
+        "LEG1": {
+          "address": "0xbf9c25aee1382f9ae68111a93de617a8df6a9b643764f85e0dc1e4e73072e532",
+          "typeArgument": "0xbf9c25aee1382f9ae68111a93de617a8df6a9b643764f85e0dc1e4e73072e532::leg1::LEG1",
+          "decimals": "10",
+          "objects": {
+            "TreasuryCap": "0x01787507e08f21c798e8e7bac3fb8387aaa5f1300bf7466666846adff6d868d2",
+            "Metadata": "0x136ca612a1a057a5481de685fd967a7c79ba170dadac5109c31bc5cdd4427f71",
+            "TokenId": "0x48bda2636e0caf1844594c6cfa0ddd2b55b5c95d3bc9a04d65b1af1e67a15cf7",
+            "origin": true
+          }
+        },
+        "LEG2": {
+          "address": "0xd0b0f84345d60643dc5edffbb111c51b8a488270aed61e9ab18c2a21db07bc7a",
+          "typeArgument": "0xd0b0f84345d60643dc5edffbb111c51b8a488270aed61e9ab18c2a21db07bc7a::leg2::LEG2",
+          "decimals": "10",
+          "objects": {
+            "TreasuryCap": "0x522eb90789b33245c19778a0bac7c721c6ed7ebb9b8248f648c6dc9f77fa9ccc",
+            "Metadata": "0xec0eeb0c3f537089ec035d9b0eddf90ac86b7814a071c5f744cf493df688edf8",
+            "TokenId": "0x5a4ed24da8c718b403f5fc13767f2307d52401d6f6a8e3d4badb684f851e9e5a",
+            "origin": true
+          }
+        },
+        "LEG3": {
+          "address": "0xd3daba823ad1c552c2cd1496f6ec106735d38c1393ada828747308dcd6af224f",
+          "typeArgument": "0xd3daba823ad1c552c2cd1496f6ec106735d38c1393ada828747308dcd6af224f::leg3::LEG3",
+          "decimals": "10",
+          "objects": {
+            "TreasuryCap": "0x100f245a5be65ab946e329433903d6845003b4b0fdcecce963014d8b03ed94bd",
+            "Metadata": "0x9ab335ec9fc2362e84a194fef4b914b1396b29df1b809f626e68f950307828e9",
+            "TokenId": "0x0d723d487db41924b109b7933b564f82a96183328fa1b20328e5ca6660b1efc1",
+            "origin": true
+          }
         }
       }
     },

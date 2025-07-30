@@ -2594,7 +2594,26 @@
             "UpgradeCap": "0xef6b5c4a72ecbc6d8d6444ded5337520d6a464cf4aaec9c28bfe761a7fe8fff9"
           },
           "disallowedFunctions": {
-            "versions": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            "versions": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
             "functionNames": [
               "deploy_remote_interchain_token",
               "send_interchain_transfer",
@@ -2786,6 +2805,16 @@
             "TreasuryCapReclaimer": "0x1d4548b7e7129aef5989966d6e2ab5140174d87878cc796523ed16c3cc638d98"
           },
           "saltAddress": "0x7a85d08ff7bba47040ee6a663bb4adfc8cde9af6455d8cb531ff7e836ef47e00"
+        },
+        "INFO": {
+          "address": "0x1f6624cf085ef0430fcb79f0a1c08792c5fb97dc4b8d92dffb09f522c7f082bb",
+          "typeArgument": "0x1f6624cf085ef0430fcb79f0a1c08792c5fb97dc4b8d92dffb09f522c7f082bb::info::INFO",
+          "decimals": "9",
+          "objects": {
+            "TokenId": "0xa4a85e83f646b058f0d81435f4c8b9c41bfb6c951efee9840be10c4679eac08e",
+            "TreasuryCap": "0x78f766a751e05206c0248075197b11cfeb268c6e89536372cd9b2d2aa33ff751",
+            "Metadata": "0x00da1721decac9258d2d4a85b82fcc4f8bc7a82033e187c497f2becd6f17d24e"
+          }
         }
       }
     },

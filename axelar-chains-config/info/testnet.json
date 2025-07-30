@@ -2592,6 +2592,29 @@
             "OwnerCap": "0x710a11f89a49aca79db65072d3a9221450ce8f5ec6fcca64047d31af984f9f8d",
             "OperatorCap": "0x2cb9640af7a6109e61ee5b10e69eabae7291c59164ea1a384c65527ac3c31d27",
             "UpgradeCap": "0xef6b5c4a72ecbc6d8d6444ded5337520d6a464cf4aaec9c28bfe761a7fe8fff9"
+          },
+          "disallowedFunctions": {
+            "versions": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            "functionNames": [
+              "deploy_remote_interchain_token",
+              "send_interchain_transfer",
+              "receive_interchain_transfer",
+              "receive_interchain_transfer_with_data",
+              "receive_deploy_interchain_token",
+              "give_unregistered_coin",
+              "mint_as_distributor",
+              "mint_to_as_distributor",
+              "burn_as_distributor",
+              "add_trusted_chains",
+              "remove_trusted_chains",
+              "register_transaction",
+              "set_flow_limit",
+              "set_flow_limit_as_token_operator",
+              "transfer_distributorship",
+              "transfer_operatorship",
+              "allow_function",
+              "disallow_function"
+            ]
           }
         },
         "Example": {

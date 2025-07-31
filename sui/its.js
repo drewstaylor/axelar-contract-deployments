@@ -237,10 +237,11 @@ async function registerCustomCoin(keypair, client, config, contracts, args, opti
 async function migrateCoinMetadata(keypair, client, config, contracts, args, options) {
     const { InterchainTokenService: itsConfig } = contracts;
     const { OperatorCap, InterchainTokenService } = itsConfig.objects;
-    const txBuilder = new TxBuilder(client);
     const symbol = args;
 
     if (!options.all) {
+        const txBuilder = new TxBuilder(client);
+
         validateParameters({
             isNonEmptyString: { symbol },
             isNonArrayObject: { tokenEntry: contracts[symbol.toUpperCase()] },
@@ -259,7 +260,10 @@ async function migrateCoinMetadata(keypair, client, config, contracts, args, opt
     } else {
         // Migrate all the coins. This might take a while.
         const legacyCoins = contracts.InterchainTokenService.legacyCoins ? contracts.InterchainTokenService.legacyCoins : [];
-        legacyCoins.forEach(async (coin) => {
+
+        for (let i = 0; i < legacyCoins.length; i++) {
+            const coin = legacyCoins[i];
+            const txBuilder = new TxBuilder(client);
             await txBuilder.moveCall({
                 target: `${itsConfig.address}::interchain_token_service::migrate_coin_metadata`,
                 arguments: [InterchainTokenService, OperatorCap, coin.TokenId],
@@ -267,8 +271,9 @@ async function migrateCoinMetadata(keypair, client, config, contracts, args, opt
             });
 
             await broadcastFromTxBuilder(txBuilder, keypair, `Migrate Coin Metadata (${coin.symbol})`, options);
-        });
-        contracts.legacyCoins = [];
+        }
+
+        contracts.InterchainTokenService.legacyCoins = [];
     }
 }
 

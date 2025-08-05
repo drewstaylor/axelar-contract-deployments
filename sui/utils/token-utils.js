@@ -65,6 +65,7 @@ async function saveTokenDeployment(
     };
     if (linkedTokens.length) contracts[symbol.toUpperCase()].linkedTokens = linkedTokens;
     if (saltAddress) contracts[symbol.toUpperCase()].saltAddress = saltAddress;
+    return;
 }
 
 module.exports = {

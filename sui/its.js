@@ -128,23 +128,24 @@ async function removeTrustedChains(keypair, client, config, contracts, args, opt
 }
 
 // register_coin_from_info
-async function registerCoinFromInfo(keypair, client, config, contracts, args, options) {
+async function registerCoinFromInfo(keypair, client, config, contracts, args, options, overrideAddress = null) {
     const { InterchainTokenService: itsConfig } = contracts;
     const { InterchainTokenService } = itsConfig.objects;
     const [symbol, name, decimals] = args;
 
     const walletAddress = keypair.toSuiAddress();
     const deployConfig = { client, keypair, options, walletAddress };
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     // Deploy token on Sui
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
 
     // New CoinManagement<T>
-    const [txBuilder, coinManagement] = await createLockedCoinManagement(deployConfig, itsConfig, tokenType);
+    const [txBuilder, coinManagement] = await createLockedCoinManagement(deployConfig, itsConfig, tokenType, overrideAddress);
 
     // Register deployed token (from info)
     await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::register_coin_from_info`,
+        target: `${address}::interchain_token_service::register_coin_from_info`,
         arguments: [InterchainTokenService, name, symbol, decimals, coinManagement],
         typeArguments: [tokenType],
     });
@@ -166,23 +167,24 @@ async function registerCoinFromInfo(keypair, client, config, contracts, args, op
 }
 
 // register_coin_from_metadata
-async function registerCoinFromMetadata(keypair, client, config, contracts, args, options) {
+async function registerCoinFromMetadata(keypair, client, config, contracts, args, options, overrideAddress = null) {
     const { InterchainTokenService: itsConfig } = contracts;
     const { InterchainTokenService } = itsConfig.objects;
     const [symbol, name, decimals] = args;
 
     const walletAddress = keypair.toSuiAddress();
     const deployConfig = { client, keypair, options, walletAddress };
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     // Deploy token on Sui
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
 
     // New CoinManagement<T>
-    const [txBuilder, coinManagement] = await createLockedCoinManagement(deployConfig, itsConfig, tokenType);
+    const [txBuilder, coinManagement] = await createLockedCoinManagement(deployConfig, itsConfig, tokenType, overrideAddress);
 
     // Register deployed token (from metadata)
     await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::register_coin_from_metadata`,
+        target: `${address}::interchain_token_service::register_coin_from_metadata`,
         arguments: [InterchainTokenService, metadata, coinManagement],
         typeArguments: [tokenType],
     });
@@ -203,7 +205,7 @@ async function registerCoinFromMetadata(keypair, client, config, contracts, args
 }
 
 // register_custom_coin
-async function registerCustomCoin(keypair, client, config, contracts, args, options) {
+async function registerCustomCoin(keypair, client, config, contracts, args, options, overrideAddress = null) {
     const { InterchainTokenService: itsConfig, AxelarGateway } = contracts;
     const walletAddress = keypair.toSuiAddress();
     const deployConfig = { client, keypair, options, walletAddress };
@@ -221,6 +223,7 @@ async function registerCustomCoin(keypair, client, config, contracts, args, opti
         metadata,
         tokenType,
         options.treasuryCap ? treasuryCap : false,
+        overrideAddress,
     );
     if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
 
@@ -358,13 +361,14 @@ async function migrateCoinMetadata(keypair, client, config, contracts, args, opt
 }
 
 // give_unlinked_coin
-async function giveUnlinkedCoin(keypair, client, config, contracts, args, options) {
+async function giveUnlinkedCoin(keypair, client, config, contracts, args, options, overrideAddress = null) {
     const { InterchainTokenService: itsConfig, AxelarGateway } = contracts;
     const { InterchainTokenService } = itsConfig.objects;
     const walletAddress = keypair.toSuiAddress();
     const deployConfig = { client, keypair, options, walletAddress };
     const [symbol, name, decimals] = args;
     const txBuilder = new TxBuilder(client);
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     // Deploy token on Sui
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
@@ -377,12 +381,13 @@ async function giveUnlinkedCoin(keypair, client, config, contracts, args, option
         symbol,
         metadata,
         tokenType,
+        overrideAddress,
     );
     if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
 
     // TokenId
     const tokenIdObject = await txBuilder.moveCall({
-        target: `${itsConfig.address}::token_id::from_address`,
+        target: `${address}::token_id::from_address`,
         arguments: [tokenId],
     });
 
@@ -394,7 +399,7 @@ async function giveUnlinkedCoin(keypair, client, config, contracts, args, option
 
     // give_unlinked_coin<T>
     const treasuryCapReclaimerOption = await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::give_unlinked_coin`,
+        target: `${address}::interchain_token_service::give_unlinked_coin`,
         arguments: [InterchainTokenService, tokenIdObject, metadata, treasuryCapOption],
         typeArguments: [tokenType],
     });
@@ -430,11 +435,12 @@ async function giveUnlinkedCoin(keypair, client, config, contracts, args, option
 }
 
 // remove_unlinked_coin
-async function removeUnlinkedCoin(keypair, client, config, contracts, args, options) {
+async function removeUnlinkedCoin(keypair, client, config, contracts, args, options, overrideAddress = null) {
     const { InterchainTokenService: itsConfig } = contracts;
     const { InterchainTokenService } = itsConfig.objects;
     const walletAddress = keypair.toSuiAddress();
     const txBuilder = new TxBuilder(client);
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     const symbol = args;
     validateParameters({
@@ -449,7 +455,7 @@ async function removeUnlinkedCoin(keypair, client, config, contracts, args, opti
 
     // Receive TreasuryCap
     const treasuryCap = await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::remove_unlinked_coin`,
+        target: `${address}::interchain_token_service::remove_unlinked_coin`,
         arguments: [InterchainTokenService, coin.objects.TreasuryCapReclaimer],
         typeArguments: [coin.typeArgument],
     });
@@ -563,11 +569,12 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
 }
 
 // remove_treasury_cap
-async function removeTreasuryCap(keypair, client, config, contracts, args, options) {
+async function removeTreasuryCap(keypair, client, config, contracts, args, options, overrideAddress = null) {
     const { InterchainTokenService: itsConfig } = contracts;
     const { InterchainTokenService } = itsConfig.objects;
     const walletAddress = keypair.toSuiAddress();
     const txBuilder = new TxBuilder(client);
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     const symbol = args;
     validateParameters({
@@ -582,7 +589,7 @@ async function removeTreasuryCap(keypair, client, config, contracts, args, optio
 
     // Receive TreasuryCap
     const treasuryCap = await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::remove_treasury_cap`,
+        target: `${address}::interchain_token_service::remove_treasury_cap`,
         arguments: [InterchainTokenService, coin.objects.TreasuryCapReclaimer],
         typeArguments: [coin.typeArgument],
     });
@@ -598,11 +605,12 @@ async function removeTreasuryCap(keypair, client, config, contracts, args, optio
 }
 
 // restore_treasury_cap
-async function restoreTreasuryCap(keypair, client, config, contracts, args, options) {
+async function restoreTreasuryCap(keypair, client, config, contracts, args, options, overrideAddress = null) {
     const { InterchainTokenService: itsConfig } = contracts;
     const { InterchainTokenService } = itsConfig.objects;
     const walletAddress = keypair.toSuiAddress();
     const txBuilder = new TxBuilder(client);
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     const symbol = args;
     validateParameters({
@@ -617,13 +625,13 @@ async function restoreTreasuryCap(keypair, client, config, contracts, args, opti
 
     // TokenId
     const tokenId = await txBuilder.moveCall({
-        target: `${itsConfig.address}::token_id::from_address`,
+        target: `${address}::token_id::from_address`,
         arguments: [coin.objects.TokenId],
     });
 
     // Receive TreasuryCapReclaimer
     const treasuryCapReclaimer = await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::restore_treasury_cap`,
+        target: `${address}::interchain_token_service::restore_treasury_cap`,
         arguments: [InterchainTokenService, coin.objects.TreasuryCap, tokenId],
         typeArguments: [coin.typeArgument],
     });
@@ -637,6 +645,59 @@ async function restoreTreasuryCap(keypair, client, config, contracts, args, opti
     // Save TreasuryCapReclaimer to coin config
     const [treasuryCapReclaimerId] = getObjectIdsByObjectTypes(result, [`TreasuryCapReclaimer<${coin.typeArgument}>`]);
     contracts[symbol.toUpperCase()].objects.TreasuryCapReclaimer = treasuryCapReclaimerId;
+}
+
+// Test calling most of the functions (avoids some are interdependent and not straight forward)
+async function checkVersionControl(keypair, client, config, contracts, args, options) {
+    const { InterchainTokenService: itsConfig } = contracts;
+    const version = args;
+    const decimals = 9;
+
+    validateParameters({
+        isNonEmptyString: { version },
+        isNonArrayObject: { versions: itsConfig.versions },
+    });
+
+    const packageIdOverride = itsConfig.versions[version];
+
+    validateParameters({
+        isNonEmptyString: { packageIdOverride },
+    });
+
+    if (parseInt(version) > 0) {
+        // register-coin-from-info
+        let symbol = 'INFO',
+            name = 'Test register from info';
+        await registerCoinFromInfo(keypair, client, config, contracts, [symbol, name, decimals], options, packageIdOverride);
+
+        // register-coin-from-metadata
+        symbol = 'META';
+        name = 'Test register from metadata';
+        await registerCoinFromMetadata(keypair, client, config, contracts, [symbol, name, decimals], options, packageIdOverride);
+
+        // give-unlinked-coin
+        symbol = 'GIVE';
+        name = 'Test give unlinked';
+        options.treasuryCapReclaimer = true;
+        await giveUnlinkedCoin(keypair, client, config, contracts, [symbol, name, decimals], options, packageIdOverride);
+        delete options.treasuryCapReclaimer;
+
+        // remove-unlinked-coin (symbol: "GIVE")
+        await removeUnlinkedCoin(keypair, client, config, contracts, symbol, options, packageIdOverride);
+
+        // register-custom-coin
+        symbol = 'CUST';
+        name = 'Test register custom';
+        options.treasuryCap = true;
+        await registerCustomCoin(keypair, client, config, contracts, [symbol, name, decimals], options, packageIdOverride);
+        delete options.treasuryCap;
+
+        // remove-treasury-cap (symbol: "CUST")
+        await removeTreasuryCap(keypair, client, config, contracts, symbol, options, packageIdOverride);
+
+        // restore-treasury-cap (symbol: "CUST")
+        await removeTreasuryCap(keypair, client, config, contracts, symbol, options, packageIdOverride);
+    } else printInfo('Version control tests disabled for version 0');
 }
 
 async function processCommand(command, config, chain, args, options) {
@@ -787,6 +848,14 @@ if (require.main === module) {
             mainProcessor(restoreTreasuryCap, options, symbol, processCommand);
         });
 
+    const checkVersionControlProgram = new Command()
+        .name('check-version-control')
+        .command('check-version-control <version>')
+        .description('Check if version control works on a certain version')
+        .action((version, options) => {
+            mainProcessor(checkVersionControl, options, version, processCommand);
+        });
+
     // v0
     program.addCommand(setFlowLimitsProgram);
     program.addCommand(addTrustedChainsProgram);
@@ -803,6 +872,7 @@ if (require.main === module) {
     program.addCommand(linkCoinProgram);
     program.addCommand(removeTreasuryCapProgram);
     program.addCommand(restoreTreasuryCapProgram);
+    program.addCommand(checkVersionControlProgram);
 
     // finalize program
     addOptionsToCommands(program, addBaseOptions, { offline: true });

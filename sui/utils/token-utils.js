@@ -30,7 +30,7 @@ async function deployTokenFromInfo(config, symbol, name, decimals) {
     return [metadata, packageId, tokenType, treasuryCap];
 }
 
-async function newCoinManagementLocked(config, itsConfig, tokenType) {
+async function createLockedCoinManagement(config, itsConfig, tokenType) {
     const txBuilder = new TxBuilder(config.client);
 
     const coinManagement = await txBuilder.moveCall({
@@ -50,6 +50,8 @@ async function saveTokenDeployment(
     TokenId, // ITS token id
     TreasuryCap, // sui::coin::TreasuryCap
     Metadata, // sui::coin::CoinMetadata
+    linkedTokens = [], // [{chain, address, linkParams}]
+    saltAddress = null, // address used for Bytes32::new for custom coin registrations and link_coin
 ) {
     contracts[symbol.toUpperCase()] = {
         address,
@@ -61,10 +63,12 @@ async function saveTokenDeployment(
             Metadata,
         },
     };
+    if (linkedTokens.length) contracts[symbol.toUpperCase()].linkedTokens = linkedTokens;
+    if (saltAddress) contracts[symbol.toUpperCase()].saltAddress = saltAddress;
 }
 
 module.exports = {
     deployTokenFromInfo,
-    newCoinManagementLocked,
+    createLockedCoinManagement,
     saveTokenDeployment,
 };

@@ -32,7 +32,7 @@ async function deployTokenFromInfo(config, symbol, name, decimals) {
 
 async function createLockedCoinManagement(config, itsConfig, tokenType, overrideAddress = null) {
     const txBuilder = new TxBuilder(config.client);
-    const address = (overrideAddress) ? overrideAddress : itsConfig.address;
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
     const coinManagement = await txBuilder.moveCall({
         target: `${address}::coin_management::new_locked`,
         typeArguments: [tokenType],

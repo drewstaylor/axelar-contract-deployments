@@ -135,7 +135,7 @@ async function registerCoinFromInfo(keypair, client, config, contracts, args, op
 
     const walletAddress = keypair.toSuiAddress();
     const deployConfig = { client, keypair, options, walletAddress };
-    const address = (overrideAddress) ? overrideAddress : itsConfig.address
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     // Deploy token on Sui
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
@@ -174,7 +174,7 @@ async function registerCoinFromMetadata(keypair, client, config, contracts, args
 
     const walletAddress = keypair.toSuiAddress();
     const deployConfig = { client, keypair, options, walletAddress };
-    const address = (overrideAddress) ? overrideAddress : itsConfig.address
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     // Deploy token on Sui
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
@@ -348,7 +348,7 @@ async function giveUnlinkedCoin(keypair, client, config, contracts, args, option
     const deployConfig = { client, keypair, options, walletAddress };
     const [symbol, name, decimals] = args;
     const txBuilder = new TxBuilder(client);
-    const address = (overrideAddress) ? overrideAddress : itsConfig.address;
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     // Deploy token on Sui
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
@@ -420,7 +420,7 @@ async function removeUnlinkedCoin(keypair, client, config, contracts, args, opti
     const { InterchainTokenService } = itsConfig.objects;
     const walletAddress = keypair.toSuiAddress();
     const txBuilder = new TxBuilder(client);
-    const address = (overrideAddress) ? overrideAddress : itsConfig.address;
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     const symbol = args;
     validateParameters({
@@ -554,7 +554,7 @@ async function removeTreasuryCap(keypair, client, config, contracts, args, optio
     const { InterchainTokenService } = itsConfig.objects;
     const walletAddress = keypair.toSuiAddress();
     const txBuilder = new TxBuilder(client);
-    const address = (overrideAddress) ? overrideAddress : itsConfig.address;
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     const symbol = args;
     validateParameters({
@@ -590,7 +590,7 @@ async function restoreTreasuryCap(keypair, client, config, contracts, args, opti
     const { InterchainTokenService } = itsConfig.objects;
     const walletAddress = keypair.toSuiAddress();
     const txBuilder = new TxBuilder(client);
-    const address = (overrideAddress) ? overrideAddress : itsConfig.address;
+    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     const symbol = args;
     validateParameters({
@@ -646,18 +646,18 @@ async function checkVersionControl(keypair, client, config, contracts, args, opt
 
     if (parseInt(version) > 0) {
         // register-coin-from-info
-        let symbol = "INFO",
-            name = "Test register from info";
+        let symbol = 'INFO',
+            name = 'Test register from info';
         await registerCoinFromInfo(keypair, client, config, contracts, [symbol, name, decimals], options, packageIdOverride);
 
         // register-coin-from-metadata
-        symbol = "META";
-        name = "Test register from metadata";
+        symbol = 'META';
+        name = 'Test register from metadata';
         await registerCoinFromMetadata(keypair, client, config, contracts, [symbol, name, decimals], options, packageIdOverride);
 
         // give-unlinked-coin
-        symbol = "GIVE";
-        name = "Test give unlinked";
+        symbol = 'GIVE';
+        name = 'Test give unlinked';
         options.treasuryCapReclaimer = true;
         await giveUnlinkedCoin(keypair, client, config, contracts, [symbol, name, decimals], options, packageIdOverride);
         delete options.treasuryCapReclaimer;
@@ -666,8 +666,8 @@ async function checkVersionControl(keypair, client, config, contracts, args, opt
         await removeUnlinkedCoin(keypair, client, config, contracts, symbol, options, packageIdOverride);
 
         // register-custom-coin
-        symbol = "CUST";
-        name = "Test register custom";
+        symbol = 'CUST';
+        name = 'Test register custom';
         options.treasuryCap = true;
         await registerCustomCoin(keypair, client, config, contracts, [symbol, name, decimals], options, packageIdOverride);
         delete options.treasuryCap;
@@ -677,8 +677,7 @@ async function checkVersionControl(keypair, client, config, contracts, args, opt
 
         // restore-treasury-cap (symbol: "CUST")
         await removeTreasuryCap(keypair, client, config, contracts, symbol, options, packageIdOverride);
-    } else 
-        printInfo("Version control tests disabled for version 0");
+    } else printInfo('Version control tests disabled for version 0');
 }
 
 async function processCommand(command, config, chain, args, options) {

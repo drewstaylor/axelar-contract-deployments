@@ -10,20 +10,18 @@ async function registerCustomCoinUtil(
     coinMetadata,
     coinType,
     treasuryCap = null,
-    overrideAddress = null,
 ) {
     const { InterchainTokenService } = itsConfig.objects;
     const txBuilder = new TxBuilder(config.client);
-    const address = overrideAddress ? overrideAddress : itsConfig.address;
 
     // New CoinManagement<T>
     const coinManagement = !treasuryCap
         ? await txBuilder.moveCall({
-              target: `${address}::coin_management::new_locked`,
+              target: `${itsConfig.address}::coin_management::new_locked`,
               typeArguments: [coinType],
           })
         : await txBuilder.moveCall({
-              target: `${address}::coin_management::new_with_cap`,
+              target: `${itsConfig.address}::coin_management::new_with_cap`,
               arguments: [treasuryCap],
               typeArguments: [coinType],
           });
@@ -44,7 +42,7 @@ async function registerCustomCoinUtil(
 
     // Register deployed token (from info)
     const [_tokenId, treasuryCapReclaimerOption] = await txBuilder.moveCall({
-        target: `${address}::interchain_token_service::register_custom_coin`,
+        target: `${itsConfig.address}::interchain_token_service::register_custom_coin`,
         arguments: [InterchainTokenService, channel, salt, coinMetadata, coinManagement],
         typeArguments: [coinType],
     });

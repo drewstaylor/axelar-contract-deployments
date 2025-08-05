@@ -2,18 +2,19 @@ const { Ed25519Keypair } = require('@mysten/sui/keypairs/ed25519');
 const { STD_PACKAGE_ID, TxBuilder } = require('@axelar-network/axelar-cgp-sui');
 const { broadcastFromTxBuilder } = require('./sign-utils');
 
-async function registerCustomCoinUtil(config, itsConfig, AxelarGateway, coinSymbol, coinMetadata, coinType, treasuryCap = null) {
+async function registerCustomCoinUtil(config, itsConfig, AxelarGateway, coinSymbol, coinMetadata, coinType, treasuryCap = null, overrideAddress = null) {
     const { InterchainTokenService } = itsConfig.objects;
     const txBuilder = new TxBuilder(config.client);
+    const address = (overrideAddress) ? overrideAddress : itsConfig.address;
 
     // New CoinManagement<T>
     const coinManagement = !treasuryCap
         ? await txBuilder.moveCall({
-              target: `${itsConfig.address}::coin_management::new_locked`,
+              target: `${address}::coin_management::new_locked`,
               typeArguments: [coinType],
           })
         : await txBuilder.moveCall({
-              target: `${itsConfig.address}::coin_management::new_with_cap`,
+              target: `${address}::coin_management::new_with_cap`,
               arguments: [treasuryCap],
               typeArguments: [coinType],
           });
@@ -34,7 +35,7 @@ async function registerCustomCoinUtil(config, itsConfig, AxelarGateway, coinSymb
 
     // Register deployed token (from info)
     const [_tokenId, treasuryCapReclaimerOption] = await txBuilder.moveCall({
-        target: `${itsConfig.address}::interchain_token_service::register_custom_coin`,
+        target: `${address}::interchain_token_service::register_custom_coin`,
         arguments: [InterchainTokenService, channel, salt, coinMetadata, coinManagement],
         typeArguments: [coinType],
     });

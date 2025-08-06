@@ -164,7 +164,7 @@ async function registerCoinFromInfo(keypair, client, config, contracts, args, op
     const tokenId = result.events[0].parsedJson.token_id.id;
 
     // Save the deployed token
-    await saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
+    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
 }
 
 // register_coin_from_metadata
@@ -180,7 +180,7 @@ async function registerCoinFromMetadata(keypair, client, config, contracts, args
     const [metadata, packageId, tokenType, treasuryCap] = await deployTokenFromInfo(deployConfig, symbol, name, decimals);
 
     // New CoinManagement<T>
-    const [txBuilder, coinManagement] = await createLockedCoinManagement(deployConfig, itsConfig, tokenType, overrideAddress);
+    const [txBuilder, coinManagement] = await createLockedCoinManagement(deployConfig, itsConfig, tokenType);
 
     // Register deployed token (from metadata)
     await txBuilder.moveCall({
@@ -201,7 +201,7 @@ async function registerCoinFromMetadata(keypair, client, config, contracts, args
     const tokenId = result.events[0].parsedJson.token_id.id;
 
     // Save the deployed token
-    await saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
+    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata);
 }
 
 // register_custom_coin
@@ -223,12 +223,11 @@ async function registerCustomCoin(keypair, client, config, contracts, args, opti
         metadata,
         tokenType,
         options.treasuryCap ? treasuryCap : false,
-        overrideAddress,
     );
     if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
 
     // Save the deployed token
-    await saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata, [], saltAddress);
+    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata, [], saltAddress);
 
     // Save TreasuryCapReclaimer to coin config (if exists)
     if (options.treasuryCap && contracts[symbol.toUpperCase()]) {
@@ -320,44 +319,24 @@ async function migrateAllCoinMetadata(keypair, client, config, contracts, args, 
 async function migrateCoinMetadata(keypair, client, config, contracts, args, options) {
     const { InterchainTokenService: itsConfig } = contracts;
     const { OperatorCap, InterchainTokenService } = itsConfig.objects;
+    const txBuilder = new TxBuilder(client);
+
     const symbol = args;
+    validateParameters({
+        isNonEmptyString: { symbol },
+        isNonArrayObject: { tokenEntry: contracts[symbol.toUpperCase()] },
+    });
 
-    if (!options.all) {
-        const txBuilder = new TxBuilder(client);
+    const tokenId = contracts[symbol.toUpperCase()].objects.TokenId;
+    const tokenType = contracts[symbol.toUpperCase()].typeArgument;
 
-        validateParameters({
-            isNonEmptyString: { symbol },
-            isNonArrayObject: { tokenEntry: contracts[symbol.toUpperCase()] },
-        });
+    await txBuilder.moveCall({
+        target: `${itsConfig.address}::interchain_token_service::migrate_coin_metadata`,
+        arguments: [InterchainTokenService, OperatorCap, tokenId],
+        typeArguments: [tokenType],
+    });
 
-        const tokenId = contracts[symbol.toUpperCase()].objects.TokenId;
-        const tokenType = contracts[symbol.toUpperCase()].typeArgument;
-
-        await txBuilder.moveCall({
-            target: `${itsConfig.address}::interchain_token_service::migrate_coin_metadata`,
-            arguments: [InterchainTokenService, OperatorCap, tokenId],
-            typeArguments: [tokenType],
-        });
-
-        await broadcastFromTxBuilder(txBuilder, keypair, `Migrate Coin Metadata (${symbol})`, options);
-    } else {
-        // Migrate all the coins. This might take a while.
-        const legacyCoins = contracts.InterchainTokenService.legacyCoins ? contracts.InterchainTokenService.legacyCoins : [];
-
-        for (let i = 0; i < legacyCoins.length; i++) {
-            const coin = legacyCoins[i];
-            const txBuilder = new TxBuilder(client);
-            await txBuilder.moveCall({
-                target: `${itsConfig.address}::interchain_token_service::migrate_coin_metadata`,
-                arguments: [InterchainTokenService, OperatorCap, coin.TokenId],
-                typeArguments: [coin.TokenType],
-            });
-
-            await broadcastFromTxBuilder(txBuilder, keypair, `Migrate Coin Metadata (${coin.symbol})`, options);
-        }
-
-        contracts.InterchainTokenService.legacyCoins = [];
-    }
+    await broadcastFromTxBuilder(txBuilder, keypair, 'Migrate Coin Metadata', options);
 }
 
 // give_unlinked_coin
@@ -380,7 +359,6 @@ async function giveUnlinkedCoin(keypair, client, config, contracts, args, option
         symbol,
         metadata,
         tokenType,
-        overrideAddress,
     );
     if (!tokenId) throw new Error(`error resolving token id from registration tx, got ${tokenId}`);
 
@@ -424,7 +402,7 @@ async function giveUnlinkedCoin(keypair, client, config, contracts, args, option
     const result = await broadcastFromTxBuilder(txBuilder, keypair, `Give Unlinked Coin (${symbol})`, options);
 
     // Save the deployed token
-    await saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata, [], saltAddress);
+    saveTokenDeployment(packageId, tokenType, contracts, symbol, decimals, tokenId, treasuryCap, metadata, [], saltAddress);
 
     // Save TreasuryCapReclaimer to coin config (if exists)
     if (options.treasuryCapReclaimer && contracts[symbol.toUpperCase()]) {
@@ -552,7 +530,7 @@ async function linkCoin(keypair, client, config, contracts, args, options) {
     const linkedToken = { destinationChain, destinationAddress };
 
     // Save deployed tokens
-    await saveTokenDeployment(
+    saveTokenDeployment(
         sourceToken.packageId,
         sourceToken.tokenType,
         contracts,

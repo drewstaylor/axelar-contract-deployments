@@ -30,11 +30,11 @@ async function deployTokenFromInfo(config, symbol, name, decimals) {
     return [metadata, packageId, tokenType, treasuryCap];
 }
 
-async function createLockedCoinManagement(config, itsConfig, tokenType, overrideAddress = null) {
+async function createLockedCoinManagement(config, itsConfig, tokenType) {
     const txBuilder = new TxBuilder(config.client);
-    const address = overrideAddress ? overrideAddress : itsConfig.address;
+
     const coinManagement = await txBuilder.moveCall({
-        target: `${address}::coin_management::new_locked`,
+        target: `${itsConfig.address}::coin_management::new_locked`,
         typeArguments: [tokenType],
     });
 
@@ -65,7 +65,6 @@ async function saveTokenDeployment(
     };
     if (linkedTokens.length) contracts[symbol.toUpperCase()].linkedTokens = linkedTokens;
     if (saltAddress) contracts[symbol.toUpperCase()].saltAddress = saltAddress;
-    return;
 }
 
 module.exports = {

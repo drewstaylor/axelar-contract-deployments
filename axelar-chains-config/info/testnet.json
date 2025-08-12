@@ -2643,11 +2643,6 @@
               "symbol": "LEG3"
             },
             {
-              "TokenId": "0x34d54c34580b2b4c0723f3fcfe91914f947e74a2c261cd6e224a5c990655d38e",
-              "TokenType": "0x2::coin::CoinMetadata<0x595a7292cfd688fc94c4581c99b459fbfd464348e5ec75cb291fd6c0c99f99bc::leg1::LEG1>",
-              "symbol": "LEG1"
-            },
-            {
               "TokenId": "0x0e9ba5645ce15cb6ac9bbda7713da4435c0cb5f9ebae9a1bf519a4b5e9ecebb0",
               "TokenType": "0x2::coin::CoinMetadata<0x35f2807d5dab6e026d38df28baa538f327cee6cab929b0c90cb9a2995413d806::leg4::LEG4>",
               "symbol": "LEG4"

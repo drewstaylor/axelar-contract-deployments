@@ -2630,54 +2630,7 @@
             "OwnerCap": "0x26cfeab456ffcad21adfae1c691fbc8f0e0c1ff3d89e4b1a3c396e631bf868a1",
             "OperatorCap": "0xfc0b5df6ac0accaa9477fbc74cad858d57ddf03709f71bd8d28ca5ae64a84892",
             "UpgradeCap": "0xc86ed74554dabc5915255e72a4a549cfb806967d628be57678883d5008701abc"
-          },
-          "legacyCoins": [
-            {
-              "TokenId": "0x8dfb1e3f79437e3ea190af64ba9ac32f20222d6eddf4f814d638fac01041fd20",
-              "TokenType": "0x2::coin::CoinMetadata<0x6ca6021b8326bb4abe52385e35ac7f4c3ba27bdcb1bf969cc768f16deed92d91::leg3::LEG3>",
-              "symbol": "LEG3"
-            },
-            {
-              "TokenId": "0x7359860a2b8e49f0e1cad5422038823c8c402af0104a21d1c77048417ee338d7",
-              "TokenType": "0x2::coin::CoinMetadata<0xffccdeac84bce68da633c4946d8fdb61c64625aecb5984ef80cb4bc136fb5960::leg3::LEG3>",
-              "symbol": "LEG3"
-            },
-            {
-              "TokenId": "0x0e9ba5645ce15cb6ac9bbda7713da4435c0cb5f9ebae9a1bf519a4b5e9ecebb0",
-              "TokenType": "0x2::coin::CoinMetadata<0x35f2807d5dab6e026d38df28baa538f327cee6cab929b0c90cb9a2995413d806::leg4::LEG4>",
-              "symbol": "LEG4"
-            },
-            {
-              "TokenId": "0x920130f0e2011410a78375f28eb38b5b2dfcf52291ef6b27d023c5dceb835fa0",
-              "TokenType": "0x2::coin::CoinMetadata<0x0628a769f6a3230f4a7faafb0183200bc92c03fc0b22c06ce5c492831af52a7f::leg4::LEG4>",
-              "symbol": "LEG4"
-            },
-            {
-              "TokenId": "0xb038b543747d28376be6277500cfd4ea0c63bc1c65aa04cdc73c227dfff841d4",
-              "TokenType": "0x2::coin::CoinMetadata<0x17f5ba1f1df34a16427e419af287910bd74ac3e14cd6de942c170de0ad66d09b::leg4::LEG4>",
-              "symbol": "LEG4"
-            },
-            {
-              "TokenId": "0x0091d338749736ac1dafdeb2157348bf36e263aac2c27901b29abf17cde4ec29",
-              "TokenType": "0x2::coin::CoinMetadata<0x461882d212a6bc2aa6a2596c2c45693a128486ac5b0ae921f61333971b4122d1::leg3::LEG3>",
-              "symbol": "LEG3"
-            },
-            {
-              "TokenId": "0xd2bfeb5cedb260e208e3d0f1d1508599ca221c5e03b9b93b08a1136a636822a3",
-              "TokenType": "0x2::coin::CoinMetadata<0x25be8acd409f37157a462d104f57c697e70117f08b8b1737aea0e9a917c8856f::leg5::LEG5>",
-              "symbol": "LEG5"
-            },
-            {
-              "TokenId": "0x08ec808165d911f423b94d020a03e4712ef03a76560ff81685631e3046b9043d",
-              "TokenType": "0x2::coin::CoinMetadata<0x4b09661adf10e13004f437ca269b25297505b7233a3fbd5dad9ef346acd110c3::leg1::LEG1>",
-              "symbol": "LEG1"
-            },
-            {
-              "TokenId": "0x8ca2f84273dcffacb3b0738ebb44b9cba97ed46c3149d070d9c5d9c1e5623fb3",
-              "TokenType": "0x2::coin::CoinMetadata<0x312fe5d8fa6bd7e868f998952d2471754752a00a56bee0cc6f8cfb022edf5627::leg2::LEG2>",
-              "symbol": "LEG2"
-            }
-          ]
+          }
         },
         "Example": {
           "address": "0xe3b180d83028071858f473d0b0308510220edcf901bfc583f7633d8409de76ea",

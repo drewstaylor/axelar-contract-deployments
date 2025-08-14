@@ -288,10 +288,10 @@ async function migrateAllCoinMetadata(keypair, client, config, contracts, args, 
         } catch (e) {
             txBuilder = new TxBuilder(client);
             if (!batchSize) {
-                printInfo(`Migrate metadata failed for coin ${coin.symbol}`, e, chalk.red);
+                printInfo(`Migrate metadata failed for coin ${coin.symbol}`, e.message, chalk.red);
                 failedMigrations.push(coin);
             } else {
-                printInfo(`Migrate metadata failed for batch ${processedBatches}`, e, chalk.red);
+                printInfo(`Migrate metadata failed for batch ${processedBatches}`, e.message, chalk.red);
                 failedMigrations = [...failedMigrations, ...currentBatch];
                 ++processedBatches;
                 currentBatch = [];
@@ -626,9 +626,13 @@ async function checkVersionControl(keypair, client, config, contracts, args, opt
     const { InterchainTokenService: itsConfig } = contracts;
     const version = args;
 
-    validateParameters({ isNonEmptyString: { version } });
-    validateParameters({ isNonEmptyString: { versionEntry: itsConfig.versions[version] } });
-    validateParameters({ isNonEmptyString: { itsObject: itsConfig.objects.InterchainTokenServicev0 } });
+    validateParameters({
+        isNonEmptyString: {
+            version,
+            versionEntry: itsConfig.versions[version],
+            itsObject: itsConfig.objects.InterchainTokenServicev0,
+        },
+    });
 
     const supportedFunctions = itsFunctions[version];
     if (!Array.isArray(supportedFunctions)) throw new Error(`No deployable versions found with id ${version}`);

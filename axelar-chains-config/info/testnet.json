@@ -2537,25 +2537,27 @@
           }
         },
         "Example": {
-          "address": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc",
+          "address": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf",
           "versions": {
-            "0": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc"
+            "0": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf"
           },
           "deployer": "0x4cdab023fcddcf492891b9d72ce7b523c5b465883d02fedd1bbe81f4598cf40b",
           "structs": {
-            "Singleton": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc::its::Singleton",
-            "Executed": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc::gmp::Executed",
-            "ExecutedWithToken": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc::its::ExecutedWithToken",
-            "TOKEN": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc::token::TOKEN",
-            "TOKEN_A": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc::token_a::TOKEN_A",
-            "TOKEN_B": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc::token_b::TOKEN_B",
-            "TOKEN_C": "0x9937b9b93101f40922e5eac59a99eedce2f266b52d5e2fae7a43fed0dbba4dbc::token_c::TOKEN_C"
+            "Singleton": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::its::Singleton",
+            "Executed": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::gmp::Executed",
+            "ExecutedWithToken": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::its::ExecutedWithToken",
+            "MultiMinter": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::operators::MultiMinter",
+            "OwnerCap": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::operators::OwnerCap",
+            "TOKEN": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::token::TOKEN",
+            "TOKEN_A": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::token_a::TOKEN_A",
+            "TOKEN_B": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::token_b::TOKEN_B",
+            "TOKEN_C": "0x323186ab2fd17805608601ac48f26bfd028ab842840affa473bb1798856495bf::token_c::TOKEN_C"
           },
           "objects": {
-            "GmpSingleton": "0x3825263b6bc64795fda9da64a5541c00222148828f4f31d7cbdf0daba9ae92eb",
-            "GmpChannelId": "0xeb10847b77f1d8344d5958d2b44f138a7c9a46d9f02a426a04482c9339b4602c",
-            "ItsSingleton": "0x93a19a62bf0aa073ce12818548c156e4f571b0dffb35356b334fd409c085f95e",
-            "ItsChannelId": "0x90813202056b4cc068dcb0a0fb3abc8df9cb1e9e34e179dffdacd33e21323e6c"
+            "GmpSingleton": "0xd9e598025726a96b1bbaac65d9cd0d1707bea2766d53dc1a59a72350839e8664",
+            "GmpChannelId": "0x2a84fa7dd751966780e9764811c351aa1a74a7e7929fd94426e7fcac236ec5f9",
+            "ItsSingleton": "0xd618ec3d85a05c2070fbfed61deb4f599a7f882b6b48acca9f1279407514e6e0",
+            "ItsChannelId": "0x747b0a9918882cd4c18b548eac0a411dc2084766d51117c430150d7718e9b331"
           }
         },
         "Governance": {
@@ -2576,6 +2578,15 @@
           "deployer": "0x4cdab023fcddcf492891b9d72ce7b523c5b465883d02fedd1bbe81f4598cf40b",
           "structs": {
             "Q": "0xca5104a872b745bc06ae180e35209820aab056a3841bd0c111099d9f25d4a69c::q::Q"
+          }
+        },
+        "XMPL": {
+          "address": "0x1e00bf77ed832bf1aceecbd8be3c0ac3736e8e7904ca03bf85147d51f3b6b201",
+          "typeArgument": "0x1e00bf77ed832bf1aceecbd8be3c0ac3736e8e7904ca03bf85147d51f3b6b201::xmpl::XMPL",
+          "decimals": "9",
+          "objects": {
+            "TreasuryCap": "0x1b82b3b623ac9af2b49109314329d373f7846676fa6c97c6f43eb1fd31253667",
+            "Metadata": "0x6705ae152ce89dd1ad61f65a12a50368acbaa5cbdfd6c48c85af80b6ce506b03"
           }
         }
       }

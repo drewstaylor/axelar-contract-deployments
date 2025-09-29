@@ -2326,7 +2326,7 @@
       "name": "Sui",
       "axelarId": "sui",
       "networkType": "testnet",
-      "rpc": "https://fullnode.testnet.sui.io:443",
+      "rpc": "https://sui-testnet-rpc.publicnode.com:443",
       "tokenSymbol": "SUI",
       "decimals": 9,
       "chainType": "sui",
@@ -2613,6 +2613,17 @@
             }
           ],
           "saltAddress": "0xb26189c6cedcae74ac4e8dd422761dab709fe3fc726d902196a1b5797c129f68"
+        },
+        "IMD": {
+          "address": "0xc40bb23d237a8dcbf000050201e28b1b2945fc41700e66ce9e7cd417541c24c6",
+          "typeArgument": "0xc40bb23d237a8dcbf000050201e28b1b2945fc41700e66ce9e7cd417541c24c6::imd::IMD",
+          "decimals": "9",
+          "objects": {
+            "TreasuryCap": "0x3e40186eeb04fc39b30f93020e2e0ffad5360afd40b5d03353c219966a12d62f",
+            "Metadata": "0xbe3a4129be7b64b7f7899710a91f7142f6279925317ef48e2786520e84f76cd7",
+            "TokenId": "0x9f37e1dfc622894eba17e9a233da6195410ef16ad2c1d1d8c90948d18eecc745",
+            "origin": true
+          }
         }
       }
     },

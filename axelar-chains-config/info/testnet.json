@@ -2581,13 +2581,13 @@
           }
         },
         "LNKL": {
-          "address": "0x8694fe48d6593c78bbb2410d3d8f9b3c20e096d13648b37a312ba0caeb63f6f9",
-          "typeArgument": "0x8694fe48d6593c78bbb2410d3d8f9b3c20e096d13648b37a312ba0caeb63f6f9::lnkl::LNKL",
+          "address": "0x96e883a13d6d057d4ae4c1ac2ddaea528d5cb833f85a9321d5ba70830fdaa6e7",
+          "typeArgument": "0x96e883a13d6d057d4ae4c1ac2ddaea528d5cb833f85a9321d5ba70830fdaa6e7::lnkl::LNKL",
           "decimals": "10",
           "objects": {
-            "TokenId": "0xe00642e70c4a2308794038904488305f78069ff8baf3d7782c13436f9d7f144a",
-            "TreasuryCap": "0x75a32e8664368154f858a18c15fe817e7d5260a6ceb70a8d5541d841b36c6ed2",
-            "Metadata": "0xd246ac60a7f015ee35354c09e96792bfdbc20dbd70795fb1d3e065c8f630e63d"
+            "TokenId": "0xa6f81b4d3e420e92bd41d4847bc100f1117e58286a329de32c6e1bfa5f1f8b62",
+            "TreasuryCap": "0x83a5b21325da08703a5770d16cbb816019d293a6cde1f82cd01a8e702b3698e2",
+            "Metadata": "0x078e1fb5ede70fa5a883b39acdd95f8e87f259fbc0225f2b4c63e30b45252206"
           },
           "linkedTokens": [
             {
@@ -2595,7 +2595,24 @@
               "destinationAddress": "0x3fc29836e84e471a053d2d9e80494a867d670ead"
             }
           ],
-          "saltAddress": "0x093e5a8d43754f2bea0df42e91b634952bd564849320964696ba104d40d02432"
+          "saltAddress": "0x7048d233faf783bcf9556393e2944ed5f9f6999a63a649e7ae734a3b74f32a2f"
+        },
+        "LNKM": {
+          "address": "0x0feb3153fb870ebf198007fe95bf1158cae8fa880a025daa24bdff5ed2376bbf",
+          "typeArgument": "0x0feb3153fb870ebf198007fe95bf1158cae8fa880a025daa24bdff5ed2376bbf::lnkm::LNKM",
+          "decimals": "10",
+          "objects": {
+            "TokenId": "0x77645fd0a4a2081ab677e0db4c7536bee37953d38850db62ba232d9e0e8b764a",
+            "TreasuryCap": "0xda92f5bf9f0536f18fded36fd7d2e81eca3696e3a2349c487fc669dc7b7be9eb",
+            "Metadata": "0xa281811c1b449778a13e791d409d5d96a9ba11291ea00ce1081e712f64c9c95f"
+          },
+          "linkedTokens": [
+            {
+              "destinationChain": "ethereum-sepolia",
+              "destinationAddress": "0x3fc29836e84e471a053d2d9e80494a867d670ead"
+            }
+          ],
+          "saltAddress": "0xb26189c6cedcae74ac4e8dd422761dab709fe3fc726d902196a1b5797c129f68"
         }
       }
     },

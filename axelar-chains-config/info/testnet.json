@@ -2579,6 +2579,23 @@
           "structs": {
             "Q": "0x78361519c20baf54122e08a6343b350c64eaa6200a69ff0bd39b128a15ba59e4::q::Q"
           }
+        },
+        "LNKL": {
+          "address": "0x8694fe48d6593c78bbb2410d3d8f9b3c20e096d13648b37a312ba0caeb63f6f9",
+          "typeArgument": "0x8694fe48d6593c78bbb2410d3d8f9b3c20e096d13648b37a312ba0caeb63f6f9::lnkl::LNKL",
+          "decimals": "10",
+          "objects": {
+            "TokenId": "0xe00642e70c4a2308794038904488305f78069ff8baf3d7782c13436f9d7f144a",
+            "TreasuryCap": "0x75a32e8664368154f858a18c15fe817e7d5260a6ceb70a8d5541d841b36c6ed2",
+            "Metadata": "0xd246ac60a7f015ee35354c09e96792bfdbc20dbd70795fb1d3e065c8f630e63d"
+          },
+          "linkedTokens": [
+            {
+              "destinationChain": "ethereum-sepolia",
+              "destinationAddress": "0x3fc29836e84e471a053d2d9e80494a867d670ead"
+            }
+          ],
+          "saltAddress": "0x093e5a8d43754f2bea0df42e91b634952bd564849320964696ba104d40d02432"
         }
       }
     },
